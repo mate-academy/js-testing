@@ -10,20 +10,51 @@ describe('BullsAndCows', () => {
       Math.random.mockRestore();
     });
 
-    it()
+    it('should return 4-digit secret from 4-digit value', () => {
+      Math.random.mockReturnValueOnce(0.1234);
 
-    it(`should return a 4-digit string for ${value}`, () => {
-      Math.random.mockReturnValueOnce(value);
+      const secret = generateSecret();
 
+      expect(secret).toBe('1234');
+    });
+
+    it('should add leading 0 for 3-digit value', () => {
+      Math.random.mockReturnValueOnce(0.0567);
+
+      const secret = generateSecret();
+
+      expect(secret).toBe('0567');
+    });
+
+    it('should not use 2-digit value for a secret', () => {
+      Math.random
+        .mockReturnValueOnce(0.0025)
+        .mockReturnValueOnce(0.9063)
+
+      const secret = generateSecret();
+
+      expect(secret).toBe('9063');
+    });
+
+    it('should not use a value with repeated digits', () => {
+      Math.random
+        .mockReturnValueOnce(0.4456)
+        .mockReturnValueOnce(0.7828)
+        .mockReturnValueOnce(0.2759)
+
+      const secret = generateSecret();
+
+      expect(secret).toBe('2759');
+    });
+
+    it.skip(`should return a 4-digit string`, () => {
       const secret = generateSecret();
 
       expect(secret).toHaveLength(4);
       expect(secret).toMatch(/^\d{4}$/);
     });
 
-    it(`should return unique digits for ${value}`, () => {
-      Math.random.mockReturnValueOnce(value);
-
+    it.skip(`should return unique digits`, () => {
       const secret = generateSecret();
       const digits = new Set(secret);
 

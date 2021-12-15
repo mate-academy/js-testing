@@ -5,15 +5,11 @@
  * @returns {string}
  */
 function generateSecret() {
-  while (true) {
-    const x = Math.floor(Math.random() * 10000);
-    const result = `${x}`.padStart(4, '0');
-    const digits = new Set(result);
+  const digits = '0123456789'.split('');
 
-    if (digits.size === result.length) {
-      return result;
-    }
-  }
+  digits.sort(() => Math.random() - 0.5);
+
+  return digits.slice(-4).join('');
 }
 
 module.exports = { generateSecret };
